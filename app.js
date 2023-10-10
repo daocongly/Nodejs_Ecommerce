@@ -5,6 +5,7 @@ const PORT = process.env.PORT || 3000;
 
 app.use(function(req, res, next) {
     console.log('baongoc')
+    next();
 })
 
 app.use((req, res, next) => {
