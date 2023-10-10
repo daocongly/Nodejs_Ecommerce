@@ -9,6 +9,8 @@ const User = require('./models/user');
 
 const app = express();
 
+const PORT = process.env.PORT || 3000;
+
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 
@@ -18,15 +20,6 @@ const shopRoutes = require('./routes/shop');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use((req, res, next) => {
-  User.findById('5bab316ce0a7c75f783cb8a8')
-    .then(user => {
-      req.user = user;
-      next();
-    })
-    .catch(err => console.log(err));
-});
-
 app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
@@ -34,22 +27,10 @@ app.use(errorController.get404);
 
 mongoose
   .connect(
-    'mongodb+srv://maximilian:9u4biljMQc4jjqbe@cluster0-ntrwp.mongodb.net/shop?retryWrites=true'
+    'mongodb+srv://daocongly0510:wPXtYKC8vaT0GyFt@congly.l23z7te.mongodb.net/shop?retryWrites=true&w=majority'
   )
   .then(result => {
-    User.findOne().then(user => {
-      if (!user) {
-        const user = new User({
-          name: 'Max',
-          email: 'max@test.com',
-          cart: {
-            items: []
-          }
-        });
-        user.save();
-      }
-    });
-    app.listen(3000);
+    app.listen(PORT, () => console.log("Server is running on port 3000"));
   })
   .catch(err => {
     console.log(err);
